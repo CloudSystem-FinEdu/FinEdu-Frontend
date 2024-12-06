@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot System</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <h1>Chatbot System</h1>
-        <div id="chat-window">
-            <!-- 메시지가 표시될 영역 -->
-            <div id="chat-messages"></div>
-        </div>
-        <div id="chat-input">
-            <input type="text" id="user-input" placeholder="Type your message..." />
-            <button id="send-button">Send</button>
-        </div>
+  <div class="chat-container">
+    <h1>FinEdu AI</h1>
+    <div id="chat-window">
+        <!-- 여기에 메시지가 동적으로 추가됩니다 -->
     </div>
-    <script src="js/script.js"></script>
+    <div id="chat-input">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+</div>
+<!-- JavaScript 파일 연결 -->
+<script src="../static/js/script.js"></script>
+
 </body>
 </html>
+
