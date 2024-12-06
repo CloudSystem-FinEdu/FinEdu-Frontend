@@ -22,6 +22,12 @@ function appendMessage(sender, message) {
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
+// 챗봇 초기 메시지 표시
+function showInitialBotMessage() {
+  const initialMessage = "안녕하세요, FinEdu AI입니다. AI기반의 뉴스 요약 및 학습 서비스를 제공합니다.";
+  appendMessage("bot", initialMessage);
+}
+
 // 챗봇 응답 생성 함수 (샘플 응답)
 function generateBotResponse(userMessage) {
     if (userMessage.includes("안녕")) {
@@ -56,5 +62,10 @@ userInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         sendButton.click();
     }
+});
+
+// 페이지 로드 시 초기 메시지 표시
+document.addEventListener("DOMContentLoaded", () => {
+  showInitialBotMessage();
 });
 
