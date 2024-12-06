@@ -14,11 +14,17 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+h1 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
 #chat-window {
   border: 1px solid #ddd;
   padding: 10px;
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 10px;
 }
 
@@ -34,7 +40,7 @@ body {
 }
 
 #send-button {
-  padding: 10px;
+  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -44,4 +50,37 @@ body {
 
 #send-button:hover {
   background-color: #0056b3;
+}
+
+/* 채팅 메시지 스타일 */
+.message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.bot-message {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.user-message .message-content {
+  background-color: #007bff;
+  color: white;
+  text-align: right;
+}
+
+.bot-message .message-content {
+  background-color: #f1f0f0;
+  color: black;
+  text-align: left;
 }
