@@ -24,19 +24,59 @@ function appendMessage(sender, message) {
 
 // 챗봇 초기 메시지 표시
 function showInitialBotMessage() {
-  const initialMessage = "안녕하세요, FinEdu AI입니다. AI기반의 뉴스 요약 및 학습 서비스를 제공합니다.";
+  const initialMessage = "안녕하세요, FinEdu AI입니다. AI기반의 뉴스 요약 및 학습 서비스를 제공합니다. 카테고리를 입력하세요.";
   appendMessage("bot", initialMessage);
 }
 
-// 챗봇 응답 생성 함수 (샘플 응답)
-function generateBotResponse(userMessage) {
-    if (userMessage.includes("안녕")) {
-        return "안녕하세요! 무엇을 도와드릴까요?";
-    } else if (userMessage.includes("날씨")) {
-        return "오늘의 날씨는 맑음입니다!";
-    } else {
-        return "죄송합니다. 이해하지 못했어요.";
-    }
+// 오늘 날짜 구하기
+function getTodayDate() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// 뉴스 요약 요청 함수
+async function fetchNewsByCategory(category) {
+  const today = getTodayDate(); // 오늘 날짜 가져오기
+  try {
+      const response = await fetch(`/news/summary?date=${today}&keyword=${encodeURIComponent(category)}`, {
+          method: 'GET',
+      });
+
+      if (!response.ok) {
+          throw new Error("뉴스 요약을 가져오는 데 실패했습니다.");
+      }
+
+      const data = await response.json();
+      if (data.data && data.data.length > 0) {
+          const news = data.data[0]; // 첫 번째 뉴스 데이터 가져오기
+          appendMessage("bot", `카테고리 [${category}]의 뉴스 요약: \n제목: ${news.title}\n내용: ${news.content}`);
+      } else {
+          appendMessage("bot", `죄송합니다. 카테고리 [${category}]에 대한 뉴스 데이터가 없습니다.`);
+      }
+
+      expectingCategory = false; // 카테고리 입력 완료
+  } catch (error) {
+      appendMessage("bot", `뉴스 데이터를 가져오는 중 오류가 발생했습니다: ${error.message}`);
+  }
+}
+
+// 사용자 메시지 처리 함수
+async function handleUserMessage(userMessage) {
+  appendMessage("user", userMessage);
+
+  if (expectingCategory) {
+      // 사용자가 카테고리를 입력한 경우
+      await fetchNewsByCategory(userMessage);
+  } else {
+      // 카테고리 외의 요청 처리
+      appendMessage("bot", "죄송합니다, 이해하지 못했습니다.");
+  }
+
+  // 입력 필드 초기화
+  userInput.value = "";
 }
 
 // 버튼 클릭 이벤트
