@@ -5,6 +5,8 @@
   border-radius: 10px;
   overflow: hidden;
   background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-header {
@@ -21,15 +23,18 @@
   padding: 10px;
   background-color: #fff;
   border-bottom: 1px solid #ccc;
+  scroll-behavior: smooth; /* 스크롤이 부드럽게 이동 */
 }
 
 .chat-input {
   display: flex;
   padding: 10px;
   border-top: 1px solid #ccc;
+  background-color: #f9f9f9;
 }
 
-.chat-input input {
+/* 입력 필드 */
+#user-input {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
@@ -37,7 +42,8 @@
   font-size: 1rem;
 }
 
-.chat-input button {
+/* 전송 버튼 */
+#send-button {
   margin-left: 10px;
   padding: 10px 20px;
   background-color: #007bff;
@@ -48,12 +54,13 @@
   cursor: pointer;
 }
 
-.chat-input button:hover {
+#send-button:hover {
   background-color: #0056b3;
 }
 
 .message {
   margin-bottom: 10px;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .user-message {
@@ -64,6 +71,7 @@
   border-radius: 10px;
   max-width: 70%;
   margin-left: auto;
+  word-wrap: break-word; /* 긴 단어도 줄바꿈 처리 */
 }
 
 .bot-message {
@@ -73,6 +81,7 @@
   padding: 10px;
   border-radius: 10px;
   max-width: 70%;
+  word-wrap: break-word; /* 긴 단어도 줄바꿈 처리 */
 }
 
 

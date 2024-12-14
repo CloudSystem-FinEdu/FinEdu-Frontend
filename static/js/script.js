@@ -22,8 +22,9 @@ function appendMessage(sender, message) {
   messageDiv.appendChild(messageContent);
   chatWindow.appendChild(messageDiv);
 
-  // 자동 스크롤
-  chatWindow.scrollTop = chatWindow.scrollHeight;
+  // 메시지가 추가될 때 자동으로 아래로 스크롤
+  scrollToBottom();
+
 }
 
 
@@ -148,6 +149,13 @@ userInput.addEventListener("keypress", (e) => {
         sendButton.click();
     }
 });
+
+// 자동 스크롤 함수
+function scrollToBottom() {
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+
 
 // 초기 메시지
 document.addEventListener("DOMContentLoaded", () => {
