@@ -96,7 +96,7 @@ async function submitQuizAnswer(quizId, userAnswer) {
 
       const data = await response.json();
       appendMessage("bot", data.data.is_correct ? "정답입니다! 🎉" : "오답입니다. 😢");
-      appendMessage("bot", `해설: ${data.data.correct_answer}`);
+      appendMessage("bot", `해설: ${data.data.explanation}`);
       appendMessage("bot", "새로운 키워드를 입력해주세요.");
       resetState();
   } catch (error) {
