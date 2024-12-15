@@ -2,7 +2,7 @@
 const chatWindow = document.getElementById("chat-window");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("send-button");
-const BASE_URL = "http://localhost:8080"; // 배포된 백엔드 URL
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:8080";
 
 
 // 상태 변수
