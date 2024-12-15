@@ -96,12 +96,12 @@ function resetToKeywordInput() {
 
 
 // 퀴즈 요청 함수
-async function fetchQuiz(summaryId) {
+async function fetchQuiz(newsId) {
   try {
       const response = await fetch(`${BASE_URL}/quiz/generate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ news_id: summaryId }),
+          body: JSON.stringify({ news_id: newsId }),
       });
 
       // API 응답 확인
