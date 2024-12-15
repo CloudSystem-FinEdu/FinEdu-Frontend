@@ -1,0 +1,22 @@
+{
+  "name": "finedu-frontend",
+  "version": "1.0.0",
+  "description": "클라우드 시스템 2024-2 프로젝트: Cloud native educational finance platform | Frontend Repository",
+  "main": "index.js",
+  "scripts": {
+  "start": "node server.js",
+  "test": "jest",
+  "build": "webpack --mode production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-fetch-mock"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
