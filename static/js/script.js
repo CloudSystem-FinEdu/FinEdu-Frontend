@@ -23,7 +23,6 @@ function appendMessage(sender, message) {
   messageDiv.appendChild(messageContent);
   chatWindow.appendChild(messageDiv);
 
-  // 메시지가 추가될 때 자동으로 아래로 스크롤
   scrollToBottom();
 
 }
@@ -149,8 +148,14 @@ async function submitQuizAnswer(quizId, userAnswer) {
 
     const data = await response.json();
 
-    appendMessage("bot", `답변이 ${data.is_Correct ? "정답" : "오답"}입니다.`);
-    appendMessage("bot", `해설: ${data.explanation}`);
+    // 정답 여부 확인 및 해설 제공
+    if (data.data.is_correct) {
+      appendMessage("bot", "정답입니다! 🎉");
+    } else {
+      appendMessage("bot", "오답입니다. 😢");
+    }
+
+    appendMessage("bot", `해설: ${data.data.explanation}`);
 
     resetToInitialMessage();
   } catch (error) {
@@ -204,8 +209,6 @@ userInput.addEventListener("keypress", (e) => {
         sendButton.click();
     }
 });
-
-
 
 // 초기 메시지 출력
 document.addEventListener("DOMContentLoaded", () => {
