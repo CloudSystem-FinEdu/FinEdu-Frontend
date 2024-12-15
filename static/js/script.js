@@ -47,6 +47,12 @@ function displayInitialMessage() {
   appendMessage("bot", "키워드를 입력해 관련 뉴스를 검색해보세요!");
 }
 
+// 초기 메시지 상태로 복원
+function resetToInitialMessage() {
+  resetState();
+  displayInitialMessage();
+}
+
 
 // 오늘 날짜 구하기
 function getTodayDate() {
@@ -57,38 +63,36 @@ function getTodayDate() {
   return `${year}-${month}-${day}`;
 }
 
+// 뉴스 요약 요청
 async function fetchNewsSummary(keyword) {
   const today = getTodayDate(); // 오늘 날짜
   try {
     const response = await fetch(`${BASE_URL}/news/summary?date=${today}&keyword=${encodeURIComponent(keyword)}`);
     if (!response.ok) {
       appendMessage("bot", "해당 키워드의 뉴스를 찾을 수 없습니다. 다시 입력해주세요.");
-      resetToInitialMessage();
+      resetToKeywordInput();
       return;
     }
 
     const data = await response.json();
-    if (data && data.data) {
-      appendMessage("bot", `키워드 [${keyword}]에 대한 뉴스:`);
-      appendMessage("bot", `제목: ${data.data.summary_title}`);
-      appendMessage("bot", `내용: ${data.data.summary_content}`);
-      appendMessage("bot", "이 뉴스 요약에 대한 퀴즈를 푸시겠습니까? (예/아니오)");
+    appendMessage("bot", `키워드 [${keyword}]에 대한 뉴스:`);
+    appendMessage("bot", `제목: ${data.summary_title}`);
+    appendMessage("bot", `내용: ${data.summary_content}`);
+    appendMessage("bot", "이 뉴스 요약에 대한 퀴즈를 푸시겠습니까? (예/아니오)");
 
-      setState("QUIZ_CONSENT");
-      currentQuizId = data.data.summary_id; // 요약 ID 저장
-    } else {
-      appendMessage("bot", "해당 키워드의 뉴스를 찾을 수 없습니다. 다시 입력해주세요.");
-      resetToInitialMessage();
-    }
-  } catch {
+    currentQuizId = data.summaryId; // 뉴스 요약 ID 저장
+    expectingKeyword = false;
+    expectingQuizConsent = true;
+  } catch (error){
     appendMessage("bot", "서버 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     resetToInitialMessage();
   }
 }
 
-function resetToInitialMessage() {
-  resetState(); // 상태 초기화
-  appendMessage("bot", "안녕하세요, Fin-Edu입니다. 키워드를 입력해주세요.");
+// 키워드 입력 상태로 복원
+function resetToKeywordInput() {
+  resetState();
+  appendMessage("bot", "키워드를 입력해주세요.");
 }
 
 
@@ -105,32 +109,26 @@ async function fetchQuiz(summaryId) {
       if (!response.ok) {
         appendMessage("bot", "퀴즈 데이터를 불러오지 못했습니다. 다시 시도해주세요.");
         resetToInitialMessage(); // 초기 메시지로 돌아가기
-        return; // 함수 종료
+        return;
       }
 
       const data = await response.json();
-      if (data.quiz) {
-          appendMessage("bot", `퀴즈 질문: ${data.quiz.question}`);
-          appendMessage(
-            "bot",
-            `선택지:\n${data.quiz.options
-              .map((option, index) => `${index + 1}. ${option}`)
-              .join("\n")}`
-          );
-          appendMessage("bot", "정답 번호를 입력해주세요.");
+      appendMessage("bot", `퀴즈 질문: ${data.quiz.question}`);
+      appendMessage(
+        "bot",
+        `선택지:\n${data.quiz.options
+          .map((option, index) => `${index + 1}. ${option}`)
+          .join("\n")}`
+      );
+      appendMessage("bot", "정답 번호를 입력해주세요.");
 
-          // 상태 업데이트
-          currentQuizId = data.quiz.quiz_id; // 퀴즈 ID 저장
-          // expectingQuizConsent = false;
-          expectingAnswer = true; // 정답 대기 상태 활성화
-      } else {
-        appendMessage("bot", "퀴즈 데이터를 불러오지 못했습니다. 다시 시도해주세요.");
-        resetToInitialMessage(); // 초기 메시지로 돌아가기
-      }
-  } catch (error) {
+      currentQuizId = data.quiz.quiz_id;
+      expectingQuizConsent = false;
+      expectingAnswer = true;
+    } catch (error) {
     // 네트워크 또는 서버 오류 처리
     appendMessage("bot", "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-    resetToInitialMessage(); // 초기 메시지로 돌아가기
+    resetToInitialMessage();
   }
 }
 
@@ -143,33 +141,21 @@ async function submitQuizAnswer(quizId, userAnswer) {
       body: JSON.stringify({ userAnswer }),
     });
 
-    // 서버 오류만 처리
-    if (!response.ok && response.status === 500) {
-      appendMessage("bot", "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    if (!response.ok) {
+      appendMessage("bot", "퀴즈 결과를 처리할 수 없습니다. 다시 시도해주세요.");
+      resetToInitialMessage();
       return;
     }
 
-    // 응답 데이터 처리
     const data = await response.json();
 
-    if (data.data) {
-      // 정답/오답 및 해설 출력
-      const isCorrect = data.data.is_correct;
-      const explanation = data.data.explanation;
+    appendMessage("bot", `답변이 ${data.is_Correct ? "정답" : "오답"}입니다.`);
+    appendMessage("bot", `해설: ${data.explanation}`);
 
-      appendMessage("bot", `답변이 ${isCorrect ? "정답" : "오답"}입니다.`);
-      appendMessage("bot", `해설: ${explanation}`);
-    } else {
-      // 예상치 못한 데이터 처리 실패
-      appendMessage("bot", "퀴즈 결과를 처리할 수 없습니다. 다시 시도해주세요.");
-    }
-
-    // 정답 처리 후 초기 상태로 복원
-    resetState();
-    displayInitialMessage();
+    resetToInitialMessage();
   } catch (error) {
-    // 네트워크 또는 기타 오류 처리
-    appendMessage("bot", "인터넷 연결을 확인해주세요. 다시 시도해주세요.");
+    appendMessage("bot", "서버 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+    resetToInitialMessage()
   }
 }
 
@@ -179,16 +165,13 @@ async function handleUserMessage(userMessage) {
   appendMessage("user", userMessage);
 
   if (expectingKeyword) {
-      // 키워드 입력 상태
       await fetchNewsSummary(userMessage);
   } else if (expectingQuizConsent) {
     // 퀴즈 진행 여부 대기 상태
     if (userMessage.toLowerCase() === "예") {
         await fetchQuiz(currentQuizId);
     } else if (userMessage.toLowerCase() === "아니오") {
-        appendMessage("bot", "새로운 키워드를 입력해주세요.");
-        resetState();
-        displayInitialMessage();
+      resetToInitialMessage();
     } else {
         appendMessage("bot", "'예' 또는 '아니오'로 응답해주세요.");
     }
@@ -201,7 +184,7 @@ async function handleUserMessage(userMessage) {
         appendMessage("bot", "유효한 정답 번호를 입력해주세요.");
     }
   } else {
-    appendMessage("bot", "키워드를 입력해주세요.");
+    resetToInitialMessage();
 }
 
 }
