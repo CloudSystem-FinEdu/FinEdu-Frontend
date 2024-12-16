@@ -2,8 +2,8 @@
 const chatWindow = document.getElementById("chat-window");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("send-button");
-const BASE_URL = "http://localhost:3001"; // 연동을 위해 상대경로로 수정함
-
+//const BASE_URL = "http://localhost:3001"; // 연동을 위해 상대경로로 수정함
+const BASE_URL = "/api"; //백엔드로 프록시하도록 설정된 경로
 
 // 상태 변수
 let currentQuizId = null; // 현재 진행 중인 퀴즈 ID
