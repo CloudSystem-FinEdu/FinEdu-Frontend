@@ -112,16 +112,16 @@ async function fetchQuiz(newsId) {
       }
 
       const data = await response.json();
-      appendMessage("bot", `퀴즈 질문: ${data.quiz.question}`);
+      appendMessage("bot", `퀴즈 질문: ${data.question}`);
       appendMessage(
         "bot",
-        `선택지:\n${data.quiz.options
+        `선택지:\n${data.options
           .map((option, index) => `${index + 1}. ${option}`)
           .join("\n")}`
       );
       appendMessage("bot", "정답 번호를 입력해주세요.");
 
-      currentQuizId = data.quiz.quiz_id;
+      currentQuizId = data.quiz_id;
       expectingQuizConsent = false;
       expectingAnswer = true;
     } catch (error) {
