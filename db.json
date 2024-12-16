@@ -1,0 +1,52 @@
+{
+  "news": [
+    {
+      "summaryId": 8,
+      "newsId": 5,
+      "summaryTitle": "원/달러 환율 17.8원 오른 1,437.0원(15:30 종가)",
+      "summaryContent": "카카오톡 okjebo를 통해 제보가 가능하다는 내용을 다룬 금융 뉴스 송출",
+      "keywords": "카카오톡, 제보, 금융",
+      "originalUrl": "https://www.yna.co.kr/view/AKR20241209113600002?section=economy/finance",
+      "publishTime": "2024-12-10T00:30:00"
+    },
+    {
+      "summaryId": 9,
+      "newsId": 6,
+      "summaryTitle": "주식 시장 강세, 코스피 2500선 회복",
+      "summaryContent": "오늘 주식 시장은 투자자들의 강한 매수세로 인해 상승 마감했습니다.",
+      "keywords": "주식, 코스피, 상승",
+      "originalUrl": "https://www.example.com/finance/market/20241210",
+      "publishTime": "2024-12-10T15:45:00"
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "1",
+      "news_id": "5",
+      "summary_id": "8",
+      "quiz_title": "환율 급등 상황",
+      "question": "2024년 12월 6일 원/달러 환율은 어떻게 변했는가?",
+      "options": ["상승", "하락", "유지", "급등"]
+    },
+    {
+      "quiz_id": "2",
+      "news_id": "6",
+      "summary_id": "9",
+      "quiz_title": "주식 시장 상승",
+      "question": "2024년 12월 10일 주식 시장의 상태는?",
+      "options": ["폭락", "상승", "보합", "급등"]
+    }
+  ],
+  "answers": [
+    {
+      "quiz_id": "1",
+      "is_correct": true,
+      "explanation": "원/달러 환율이 17.8원 상승하여 1,437.0원으로 마감했습니다."
+    },
+    {
+      "quiz_id": "2",
+      "is_correct": false,
+      "explanation": "주식 시장은 상승 마감했습니다."
+    }
+  ]
+}

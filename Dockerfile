@@ -1,23 +1,18 @@
-# Node.js 이미지 사용 (Slim 버전으로 경량화)
-FROM node:20-slim
+# Nginx 이미지를 기반으로 사용
+FROM nginx:alpine
 
-# 작업 디렉터리 설정
-WORKDIR /usr/src/app
+# 정적 파일 복사
+COPY static/ /usr/share/nginx/html/static/
+COPY templates/ /usr/share/nginx/html/
 
-# 프로젝트 파일 복사
-COPY package.json package-lock.json ./
+# Nginx 설정 파일 복사
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# 의존성 설치 (http-server만 설치)
-RUN npm install --only=prod http-server
+# Nginx 포트 노출
+EXPOSE 80
 
-# 정적 파일 복사 (불필요한 파일 제외)
-COPY static/ static/
-COPY templates/ templates/
+# Nginx 실행
+CMD ["nginx", "-g", "daemon off;"]
 
-# 포트 노출
-EXPOSE 3000
-
-# 정적 파일 제공
-CMD ["npx", "http-server", ".", "-p", "3000"]
 
 
