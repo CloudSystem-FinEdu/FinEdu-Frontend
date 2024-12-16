@@ -64,7 +64,7 @@ function getTodayDate() {
 
 // 뉴스 요약 요청
 async function fetchNewsSummary(keyword) {
-  const today = getTodayDate(); // 오늘 날짜
+  // const today = getTodayDate(); // 오늘 날짜
   try {
     const response = await fetch(`${BASE_URL}/news/summary?keyword=${encodeURIComponent(keyword)}`);
     if (!response.ok) {
@@ -75,8 +75,8 @@ async function fetchNewsSummary(keyword) {
 
     const data = await response.json();
     appendMessage("bot", `키워드 [${keyword}]에 대한 뉴스:`);
-    appendMessage("bot", `제목: ${data.summary_title}`);
-    appendMessage("bot", `내용: ${data.summary_content}`);
+    appendMessage("bot", `제목: ${data.summaryTitle}`);
+    appendMessage("bot", `내용: ${data.summaryContent}`);
     appendMessage("bot", "이 뉴스 요약에 대한 퀴즈를 푸시겠습니까? (예/아니오)");
 
     currentQuizId = data.summaryId; // 뉴스 요약 ID 저장

@@ -5,7 +5,7 @@
       "newsId": 5,
       "summaryTitle": "원/달러 환율 17.8원 오른 1,437.0원(15:30 종가)",
       "summaryContent": "카카오톡 okjebo를 통해 제보가 가능하다는 내용을 다룬 금융 뉴스 송출",
-      "keywords": "카카오톡, 제보, 금융",
+      "keywords": ["bit", "카카오톡", "제보", "금융"],
       "originalUrl": "https://www.yna.co.kr/view/AKR20241209113600002?section=economy/finance",
       "publishTime": "2024-12-10T00:30:00"
     },
