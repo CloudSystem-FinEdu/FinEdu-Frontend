@@ -149,7 +149,7 @@ async function submitQuizAnswer(quizId, userAnswer) {
     const data = await response.json();
 
     // 정답 여부 확인 및 해설 제공
-    if (data.is_correct) {
+    if (data.correct) {
       appendMessage("bot", "정답입니다! 🎉");
     } else {
       appendMessage("bot", "오답입니다. 😢");
